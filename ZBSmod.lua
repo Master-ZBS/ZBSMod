@@ -206,7 +206,7 @@ SMODS.current_mod.extra_tabs = function() --Credits tab
 				{
 					n = G.UIT.T,
 					config = {
-					text = ":3",
+					text = "Kevin Macleod and Cryptid",
 					shadow = false,
 					scale = scale*0.75,
 					colour = G.C.RED
