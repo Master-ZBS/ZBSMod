@@ -18,7 +18,7 @@ SMODS.Booster{
 	group_key = "zbs_tequila_pack",
 	atlas = 'tequilaatlas', 
 	pos = { x = 0, y = 0 },
-	discovered = true,
+	--discovered = true,
 	loc_txt= {
 		name = 'TEQUILA BOOSTER PACK',
 		text = { "Pick {C:attention}#1#{} card out {C:attention}#2#{} jokers",
@@ -59,7 +59,7 @@ SMODS.Booster{
 	group_key = "zbs_office_pack",
 	atlas = 'boosteratlas', 
 	pos = { x = 0, y = 0 },
-	discovered = true,
+	--discovered = true,
 	loc_txt= {
 		name = 'Office Drawer',
 		text = { "Pick {C:attention}#1#{} card out {C:attention}#2#{} pieces of",
@@ -118,4 +118,5 @@ SMODS.Booster{
 	select_card = 'consumeables',
 	
 	in_pool = function() return true end
+
 }
