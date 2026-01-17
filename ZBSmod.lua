@@ -249,7 +249,61 @@ SMODS.current_mod.extra_tabs = function() --Credits tab
 					}
 				}
 				} 
-			}
+			},
+			{
+				n = G.UIT.R,
+				config = {
+				padding = 0,
+				align = "cm"
+				},
+				nodes = {
+				{
+					n = G.UIT.T,
+					config = {
+					text = "and",
+					shadow = false,
+					scale = scale*0.66,
+					colour = G.C.INACTIVE
+					}
+				}
+				} 
+			},
+			{
+				n = G.UIT.R,
+				config = {
+				padding = 0,
+				align = "cm"
+				},
+				nodes = {
+				{
+					n = G.UIT.T,
+					config = {
+					text = "YOU",
+					shadow = false,
+					scale = scale*2,
+					colour = G.C.BLUE
+					}
+				}
+				} 
+			},
+			{
+				n = G.UIT.R,
+				config = {
+				padding = 0,
+				align = "cm"
+				},
+				nodes = {
+				{
+					n = G.UIT.T,
+					config = {
+					text = "for checking this mod out",
+					shadow = false,
+					scale = scale*0.66,
+					colour = G.C.INACTIVE
+					}
+				}
+				} 
+			},
 			}
 		}
 		end
