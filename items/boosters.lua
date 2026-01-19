@@ -118,5 +118,4 @@ SMODS.Booster{
 	select_card = 'consumeables',
 	
 	in_pool = function() return true end
-
 }

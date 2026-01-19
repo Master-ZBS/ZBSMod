@@ -36,9 +36,9 @@ SMODS.Blind {
 			if _discardthisone == true then
 				local _selected_card = G.hand.cards[i]
 				G.hand:add_to_highlighted(_selected_card, true)
-				G.FUNCS.discard_cards_from_highlighted(nil, true)
 			end
 		end
+		G.FUNCS.discard_cards_from_highlighted(nil, true)
 	end,
 }
 

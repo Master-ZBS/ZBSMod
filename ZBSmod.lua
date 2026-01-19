@@ -1,5 +1,7 @@
 SampleJimbos = {}
 
+ZBSMod_config = SMODS.current_mod.config or {}
+
 -- ZBS joker pool
 SMODS.ObjectType({
 	key = "ZBSaddition",
@@ -310,22 +312,143 @@ SMODS.current_mod.extra_tabs = function() --Credits tab
 	}
 end
 
+SMODS.current_mod.config_tab = function()
+	return {n = G.UIT.ROOT, config = {r = 0.1, align = "cm", padding = 0.1, colour = G.C.BLACK, minw = 8, minh = 6}, nodes = {
+		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
+			{n = G.UIT.C, config = { align = "c", padding = 0 }, nodes = {
+				{ n = G.UIT.T, config = { text = "Print extra debug stuff that might clog up the output", scale = 0.35, colour = G.C.UI.TEXT_LIGHT }},
+			}},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
+				create_toggle{ col = true, label = "", scale = 0.85, w = 0, shadow = true, ref_table = ZBSMod_config, ref_value = 'printdebugstuffthatmightclogtheoutput' },
+			}},
+		}},
+	}}
+end
+
 local tick_timer = 0
 
 -- Runs every frame, even in menu
 function SMODS.Update(dt)
-    tick_timer = tick_timer + dt
+	tick_timer = tick_timer + dt
 	
-    if tick_timer >= 1 then
-        tick_timer = tick_timer - 1
+	if tick_timer >= 1 then
+		tick_timer = tick_timer - 1
 		
-        -- Example logic: always update these flags
-        player_in_game = (G.STATE == 5 or G.STATE == 999 or G.STATE == 7 or G.STATE == 3 or G.STATE == 1 or G.STATE == 2 or G.STATE == 19 or G.STATE == 8)
+		-- Example logic: always update these flags
+		player_in_game = (G.STATE == 5 or G.STATE == 999 or G.STATE == 7 or G.STATE == 3 or G.STATE == 1 or G.STATE == 2 or G.STATE == 19 or G.STATE == 8)
 		if player_in_game and not next(SMODS.find_mod("Yahimod")) then
 			update_exotic_theme(G.jokers)
 		end
-    end
+	end
 end
+
+--local zbsintroreplacement =
+SMODS.Atlas{
+	key = 'zbsintroreplacement',
+	path = 'zbs_placeholder_intro.png',
+	--px = 71,
+	--py = 95,
+	px = 2,
+	py = 14,
+}
+
+local old_card_init = Card.init
+
+function Card:init(X, Y, W, H, card_type, center, params)
+	old_card_init(self, X, Y, W, H, card_type, center, params)
+
+	-- We are in the title screen
+	print(G.STATE)
+	if G.STATE == 13 then
+		-- Intro card has no center or ability
+		print(self)
+		--if not self.ability and not self.area then
+			print("now checking center")
+			-- Is using the joker atlas
+			if self.children and self.children.center then
+				local sprite = self.children.center
+				if sprite.atlas and sprite.atlas.name and sprite.atlas.name == "Joker" then
+				if ZBSMod_config and ZBSMod_config.printdebugstuffthatmightclogtheoutput and ZBSMod_config.printdebugstuffthatmightclogtheoutput == true then
+				print("printing sprite")
+				print(sprite)
+				for i, v in pairs(sprite) do
+					print(i,type(v),v)
+				end
+				print("printing other interesting stuff i wanna print")
+				print("scale:", sprite.scale)
+				for i, v in pairs(sprite.scale) do
+					print(i,type(v),v)
+				end
+				print("alignment:", sprite.alignment)
+				for i, v in pairs(sprite.alignment) do
+					print(i,type(v),v)
+				end
+				print("offset:", sprite.offset)
+				for i, v in pairs(sprite.offset) do
+					print(i,type(v),v)
+				end
+				print("sprite_pos:", sprite.sprite_pos)
+				for i, v in pairs(sprite.sprite_pos) do
+					print(i,type(v),v)
+				end
+				print("sprite_pos_copy:", sprite.sprite_pos_copy)
+				for i, v in pairs(sprite.sprite_pos_copy) do
+					print(i,type(v),v)
+				end
+				print("FRAME:", sprite.FRAME)
+				for i, v in pairs(sprite.FRAME) do
+					print(i,type(v),v)
+				end
+				print("hover_offset:", sprite.hover_offset)
+				for i, v in pairs(sprite.hover_offset) do
+					print(i,type(v),v)
+				end
+				print("config:", sprite.config)
+				for i, v in pairs(sprite.config) do
+					print(i,type(v),v)
+				end
+				print("printing atlas")
+				print(sprite.atlas)
+				for i, v in pairs(sprite.atlas) do
+					print(i,type(v),v)
+				end
+				--sprite.scale = {x = 71^2, y = 95^2}
+				
+				--sprite.atlas = zbsintroreplacement
+				--sprite.atlas = G.ASSET_ATLAS["zbsintroreplacement"]
+				print("printing my atlas")
+				--print(zbsintroreplacement)
+				--for i, v in pairs(zbsintroreplacement) do
+				--	print(i,type(v),v)
+				--end
+				print("printing G.ASSET_ATLAS")
+				print(G.ASSET_ATLAS)
+				for i, v in pairs(G.ASSET_ATLAS) do
+					print(i,type(v),v)
+				end
+				print("printing my atlas but it's G.ASSET_ATLAS")
+				print(G.ASSET_ATLAS["zbs_zbsintroreplacement"])
+				for i, v in pairs(G.ASSET_ATLAS["zbs_zbsintroreplacement"]) do
+					print(i,type(v),v)
+				end
+				
+				end
+				print("alright, time to replace the atlas, here goes nothing!")
+				sprite.atlas = G.ASSET_ATLAS["zbs_zbsintroreplacement"]
+					sprite:set_sprite_pos({
+						x = -0.5,
+						y = -0.5
+					})
+				--sprite.atlas.px = 1
+				--sprite.sprite_pos = {x = 1, y = 0}
+				--sprite.scale = {x = 71^2, y = 95^2}
+				
+				end
+			end
+		end
+	--end
+end
+
 
 assert(SMODS.load_file("globals.lua"))()
 

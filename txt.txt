@@ -10,3 +10,8 @@ Primal Aspid: -6 Mult
 the vessel from deltarune
 
 midasses conscript: all gold seal gold diamond suit cards held in hand give $10, all gold seal gold diamond suit cards played give $5
+
+todo:
+look into animated sprites
+
+3 27

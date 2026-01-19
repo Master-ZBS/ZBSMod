@@ -1630,7 +1630,7 @@ SMODS.Joker{
 -- midas conscript
 SMODS.Atlas{
 	key = 'zbsmidasconscript',
-	path = 'zbs_lowqualitymeme.png',
+	path = 'zbs_placeholder_joker.png',
 	px = 71,
 	py = 96,
 }
@@ -1653,7 +1653,7 @@ SMODS.Joker{
 	eternal_compat = false,
 	perishable_compat = false,
 	
-	pos = {x=0.2, y= -0.1},
+	pos = {x=0, y= 0},
 	config = { extra = {dollars = 10}},
 	
 	loc_vars = function(self, info_queue, center)
@@ -2068,7 +2068,7 @@ SMODS.Joker{
 					"{C:inactive}Currently {X:mult,C:white}X#2#{C:inactive} Mult",}
 	},
 	atlas = 'zbsdoboxy',
-	rarity = 2,
+	rarity = 3,
 	cost = 4,
 	pools = {["ZBSaddition"] = true, ["Tequila"] = true, ["DillyWilly"] = true},
 	
@@ -2077,16 +2077,15 @@ SMODS.Joker{
 	blueprint_compat = true,
 	eternal_compat = true,
 	perishable_compat = true,
-
+	
 	pos = {x=0, y= 0},
 	config = { extra = {xmult = 1, xmulttotal = 1}},
-
+	
 	loc_vars = function(self, info_queue, center)
-		--info_queue[#info_queue+1] = G.P_CENTERS.j_zbs_zbsquinn
         info_queue[#info_queue+1] = {key = 'zbsmod_artcredit', set = 'Other', vars = { "FatOldFart and ZBS" }}
 		return { vars = { center.ability.extra.xmult, center.ability.extra.xmulttotal }  }
 	end,
-
+	
 	calculate = function(self, card, context)
 		bnacount = 0
 		for i = 1, #G.jokers.cards do
@@ -2094,27 +2093,16 @@ SMODS.Joker{
 				bnacount = bnacount + 1
 			end
 		end
-		card.ability.extra.xmulttotal = (bnacount + 1) * card.ability.extra.xmult
+		card.ability.extra.xmulttotal = bnacount * card.ability.extra.xmult
 		if context.joker_main then
 			if card.ability.extra.xmulttotal > 0 then
 				return {
-					--message = "+".. card.ability.extra.multtotal.. " Mult",
-					x_mult = card.ability.extra.xmulttotal,
-					--message = "QUINN CHAN",
-					--sound = "zbs_quinnchan"
+					x_mult = card.ability.extra.xmulttotal + 1,
 				}
-			else
-				--return {
-				--	message = "@QuinnOfGilead QUINN CHAN WHERE ARE YOU",
-				--	sound = "zbs_quinnchan"
-				--}
 			end
 		end
-		if context.selling_self then
-			play_sound("zbs_joolfuckingdies")
-		end
 	end,
-
+	
 	check_for_unlock = function(self, args)
 		if args.type == 'test' then --not a real type, just a joke
 			unlock_card(self)
@@ -2153,15 +2141,14 @@ SMODS.Joker{
 	blueprint_compat = true,
 	eternal_compat = true,
 	perishable_compat = true,
-
+	
 	pos = {x=0, y= 0},
 	config = { extra = {xchips = 1, xchipstotal = 1}},
-
+	
 	loc_vars = function(self, info_queue, center)
-		--info_queue[#info_queue+1] = G.P_CENTERS.j_zbs_zbsquinn
 		return { vars = { center.ability.extra.xchips, center.ability.extra.xchipstotal }  }
 	end,
-
+	
 	calculate = function(self, card, context)
 		dillywillycount = 0
 		for i = 1, #G.jokers.cards do
@@ -2169,27 +2156,117 @@ SMODS.Joker{
 				dillywillycount = dillywillycount + 1
 			end
 		end
-		card.ability.extra.xchipstotal = (dillywillycount + 1) * card.ability.extra.xchips
+		card.ability.extra.xchipstotal = dillywillycount * card.ability.extra.xchips
 		if context.joker_main then
 			if card.ability.extra.xchipstotal > 0 then
 				return {
-					--message = "+".. card.ability.extra.multtotal.. " Mult",
-					x_chips = card.ability.extra.xchipstotal,
-					--message = "QUINN CHAN",
-					--sound = "zbs_quinnchan"
+					x_chips = card.ability.extra.xchipstotal + 1,
 				}
-			else
-				--return {
-				--	message = "@QuinnOfGilead QUINN CHAN WHERE ARE YOU",
-				--	sound = "zbs_quinnchan"
-				--}
 			end
 		end
-		if context.selling_self then
-			play_sound("zbs_joolfuckingdies")
+	end,
+	
+	check_for_unlock = function(self, args)
+		if args.type == 'test' then --not a real type, just a joke
+			unlock_card(self)
+		end
+		--unlock_card(self) --unlocks the card if it isnt unlocked
+	end,
+}
+
+-- voucher scaling
+SMODS.Atlas{
+	key = 'zbshoney',
+	path = 'zbs_placeholder_joker.png',
+	px = 71,
+	py = 95,
+}
+
+SMODS.Joker{
+	key = 'zbshoney',
+	loc_txt= {
+		name = 'Honey Sponsor',
+		text = { "{X:mult,C:white}X#1#{} Mult",
+					"for every Voucher",
+					"redeemed this run",
+					"{C:inactive}Currently {X:mult,C:white}X#2#{C:inactive} Mult",}
+	},
+	atlas = 'zbshoney',
+	rarity = 3,
+	cost = 4,
+	pools = {["ZBSaddition"] = true},
+	
+	unlocked = true,
+	discovered = false,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = true,
+	
+	pos = {x=0, y= 0},
+	config = { extra = {xmult = 0.1, xmulttotal = 1}},
+	
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.xmult, center.ability.extra.xmulttotal }  }
+	end,
+	
+	calculate = function(self, card, context)
+		local vouchers = {}
+		for i, v in pairs(G.GAME.used_vouchers) do
+			if v == true then
+				vouchers[#vouchers + 1] = i
+			end
+		end
+		card.ability.extra.xmulttotal = #vouchers * card.ability.extra.xmult + 1
+		if context.joker_main then
+			if card.ability.extra.xmulttotal > 0 then
+				print(#vouchers)
+				for i, v in pairs(vouchers) do
+					print(i,v)
+				end
+				return {
+					x_mult = card.ability.extra.xmulttotal,
+				}
+			end
+		end
+		if context.buying_card then
+			if ZBSMod_config and ZBSMod_config.printdebugstuffthatmightclogtheoutput and ZBSMod_config.printdebugstuffthatmightclogtheoutput == true then
+			print("new card bought")
+			print(context.card)
+			print("printing the things in it")
+			for i, v in pairs(context.card) do
+				print(i,type(v),v)
+			end
+			if context.card.config then
+				print("config found, printing...")
+				for i, v in pairs(context.card.config) do
+					print(i,type(v),v)
+				end
+				if context.card.config.center then
+					print("config center found, printing...")
+					for i, v in pairs(context.card.config.center) do
+						print(i,type(v),v)
+					end
+					if context.card.config.center.set and context.card.config.center.set == "Voucher" then
+						print("omg omg it's a voucher!!! everyone come look at this!!! IT'S A VOUCJHER!!!!!!111")
+					end
+				else
+					print("no config center found?")
+				end
+				
+			else
+				print("no config found?")
+			end
+			end
+			if context.card and context.card.config and context.card.config.center and context.card.config.center.set and context.card.config.center.set == "Voucher" then
+				print(#vouchers)
+				return {
+					--message = "Upgrade!",
+					message = localize('k_upgrade_ex'),
+				}
+			end
 		end
 	end,
-
+	
 	check_for_unlock = function(self, args)
 		if args.type == 'test' then --not a real type, just a joke
 			unlock_card(self)

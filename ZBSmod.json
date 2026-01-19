@@ -2,7 +2,7 @@
   "id": "ZBSmod",
   "name": "ZBS Mod",
   "display_name": "ZBS Mod",
-  "author": ["Master ZBS"],
+  "author": ["Master ZBS           pussy"],
   "description": ":3",
   "prefix": "zbs",
   "prefixcomment":"ABOVE PREFIX IS ADDED TO E.G. LOCALIZATION!",
@@ -10,6 +10,6 @@
   "priority": 42,
   "badge_colour": "1de619",
   "badge_text_colour": "",
-  "version": "0.7",
+  "version": "0.8",
   "dependencies": ["Steamodded (>=1.0.0~BETA-0614a)"]
 }

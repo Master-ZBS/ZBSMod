@@ -7,7 +7,7 @@ SMODS.Atlas{
 
 SMODS.Atlas{
 	key = 'zbsdeckplaceholder',
-	path = 'new_zbs_shmeck.png',
+	path = 'zbs_placeholder_joker.png',
 	px = 71,
 	py = 95,
 }
@@ -127,7 +127,7 @@ SMODS.Back({
 		print(context.individual,context.cardarea,context.cardarea == G.hand,context.other_card,context.end_of_round)
 			local c = context.other_card
 			
-			if SMODS.has_enhancement(c, 'm_gold') then
+			if SMODS.has_enhancement(c, 'm_gold') and false then -- may readd lator
 				return {
 					dollars = 3,
 					card = c,

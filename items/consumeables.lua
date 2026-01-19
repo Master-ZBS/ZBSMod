@@ -1,6 +1,6 @@
 SMODS.Atlas{
-	key = 'zbs_nega',
-	path = 'zbs_shmeck.png',
+	key = 'zbs_depression',
+	path = 'zbs_placeholder_joker.png',
 	px = 568,
 	py = 760,
 }
@@ -32,7 +32,7 @@ SMODS.Consumable {
 		}
 	},
 	cost = 4,
-	atlas = "zbs_nega",
+	atlas = "zbs_depression",
 	pos = {x=0, y=0},
 	pools = {["ZBSaddition"] = true},
 	
