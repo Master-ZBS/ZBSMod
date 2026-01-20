@@ -2093,11 +2093,11 @@ SMODS.Joker{
 				bnacount = bnacount + 1
 			end
 		end
-		card.ability.extra.xmulttotal = bnacount * card.ability.extra.xmult
+		card.ability.extra.xmulttotal = bnacount * card.ability.extra.xmult + 1
 		if context.joker_main then
 			if card.ability.extra.xmulttotal > 0 then
 				return {
-					x_mult = card.ability.extra.xmulttotal + 1,
+					x_mult = card.ability.extra.xmulttotal,
 				}
 			end
 		end
@@ -2156,11 +2156,11 @@ SMODS.Joker{
 				dillywillycount = dillywillycount + 1
 			end
 		end
-		card.ability.extra.xchipstotal = dillywillycount * card.ability.extra.xchips
+		card.ability.extra.xchipstotal = dillywillycount * card.ability.extra.xchips + 1
 		if context.joker_main then
 			if card.ability.extra.xchipstotal > 0 then
 				return {
-					x_chips = card.ability.extra.xchipstotal + 1,
+					x_chips = card.ability.extra.xchipstotal,
 				}
 			end
 		end
