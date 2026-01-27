@@ -24,7 +24,7 @@ function return_JokerValues() -- not used, just here to demonstrate how you coul
 end
 
 -- test
-SMODS.Atlas{
+--[[SMODS.Atlas{
 	key = 'zbstest',
 	path = 'j_sample_baroness.png',
 	px = 71,
@@ -81,7 +81,7 @@ SMODS.Joker{
 		end
 		--unlock_card(self) --unlocks the card if it isnt unlocked
 	end,
-}
+}]]--
 
 -- quinn
 SMODS.Atlas{
