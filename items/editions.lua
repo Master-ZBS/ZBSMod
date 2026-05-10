@@ -1,8 +1,8 @@
 SMODS.Sound({key = "compressioneffect", path = "compressioneffect.ogg",})
 
-SMODS.Shader({ key = 'compressed', path = 'compressed.fs' })
+SMODS.Shader({ key = 'jpeg', path = 'jpeg.fs' })
 
-SMODS.Edition{
+SMODS.Edition{ -- todo: remove all mentions of recalc_joker_slots()
 	key = "zbscompressed",
 	order = 2,
 	weight = 13,
@@ -10,7 +10,8 @@ SMODS.Edition{
 	extra_cost = 3,
 	
 	config = {
-		joker_slots = 0.5
+		joker_slots = 0.5,
+		card_limit = 0.5
 	},
 	sound = {
 		sound = "zbs_compressioneffect",
@@ -27,12 +28,13 @@ SMODS.Edition{
 	},
 	
 	loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = {key = 'zbsmod_annoyedrant', set = 'Other', vars = { ":(" }}
 		return {
 			vars = { self.config.joker_slots }
 		}
 	end,
 	
-	shader = "compressed",
+	shader = "jpeg",
 	
 	on_apply = function(self, card)
 		--if card.area == G.jokers then
@@ -51,6 +53,56 @@ SMODS.Edition{
 		if context.joker_removed then
 			recalc_joker_slots()
 		end
+	end,
+	get_weight = function(self)
+		G.GAME.zbs = G.GAME.zbs or {}
+		G.GAME.zbs.compression_rate = G.GAME.zbs.compression_rate or 1
+		return G.GAME.zbs.compression_rate * self.weight
+	end
+}
+
+SMODS.Shader({
+    key = "negacomp",
+    path = "negacomp.fs"
+})
+
+SMODS.Edition{
+	key = "zbsnegacompressed",
+	order = 3,
+	weight = 2,
+	in_shop = true,
+	extra_cost = 10,
+	
+	config = {
+		card_limit = 1.5
+	},
+	sound = {
+		sound = "zbs_compressioneffect",
+		per = 1,
+		vol = 0.3,
+	},
+	
+	loc_txt = {
+		name = "Negative Compression",
+		label = "Negative Compression",
+		text = {
+			"{C:blue}+1.5{} Joker slots"
+		}
+	},
+	
+	loc_vars = function(self, info_queue, card)
+        --info_queue[#info_queue+1] = {key = 'zbsmod_annoyedrant', set = 'Other', vars = { ":(" }}
+		return {
+			vars = {  }
+		}
+	end,
+	
+	shader = "negacomp",
+	
+	get_weight = function(self)
+		G.GAME.zbs = G.GAME.zbs or {}
+		G.GAME.zbs.compression_rate = G.GAME.zbs.compression_rate or 1
+		return G.GAME.zbs.compression_rate * self.weight
 	end
 }
 

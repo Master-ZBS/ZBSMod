@@ -252,6 +252,11 @@ SMODS.Back({
 					SMODS.add_card({ key = 'c_zbs_zipfile' })
 					SMODS.add_card({ key = 'c_zbs_zipfile' })
 					SMODS.add_card({ key = 'c_zbs_zipfile' })
+					for i = 1,15 do
+						local _tag = Tag("tag_double")
+						add_tag(_tag)
+						_tag:apply_to_run({ type = "new_blind_choice" })
+					end
 					
 					return true
 				  end

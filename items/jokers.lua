@@ -120,6 +120,12 @@ SMODS.Joker{
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.mult, G.GAME.probabilities.normal, center.ability.chance, center.ability.timetillundeafen, center.ability.deafentext, center.ability.undeafentext, center.ability.leavechance }  }
 	end,
+	
+	set_badges = function(self, card, badges)
+		--badges[#badges+1] = create_badge("hello", G.C.RED, G.C.BLACK, 1.2 )
+		--badges[#badges+1] = create_badge("Tequila", G.C.ZBS.TequilaPRIMARY, G.C.ZBS.TequilaSECONDARY, 1.2 )
+		addTequilaBadge(badges)
+	end,
 
 	calculate = function(self, card, context)
 		if context.joker_main then
@@ -215,15 +221,19 @@ SMODS.Joker{
 	blueprint_compat = true,
 	eternal_compat = true,
 	perishable_compat = true,
-
+	
 	pos = {x=0, y= 0},
 	config = { extra = {mult = 4, multtotal = 0}},
-
+	
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = G.P_CENTERS.j_zbs_zbsquinn
 		return { vars = { center.ability.extra.mult, center.ability.extra.multtotal }  }
 	end,
-
+	
+	set_badges = function(self, card, badges)
+		addTequilaBadge(badges)
+	end,
+	
 	calculate = function(self, card, context)
 		quinncount = 0
 		for i = 1, #G.jokers.cards do
@@ -251,7 +261,7 @@ SMODS.Joker{
 			play_sound("zbs_joolfuckingdies")
 		end
 	end,
-
+	
 	check_for_unlock = function(self, args)
 		if args.type == 'test' then --not a real type, just a joke
 			unlock_card(self)
@@ -300,6 +310,10 @@ SMODS.Joker{
 
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.chips, center.ability.extra.mult, G.GAME.probabilities.normal, center.ability.chance, center.ability.jokerchance }  }
+	end,
+	
+	set_badges = function(self, card, badges)
+		addTequilaBadge(badges)
 	end,
 
 	calculate = function(self, card, context)
@@ -376,6 +390,10 @@ SMODS.Joker{
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.mult, center.ability.extra.multace }  }
 	end,
+	
+	set_badges = function(self, card, badges)
+		addTequilaBadge(badges)
+	end,
 
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual and context.other_card then
@@ -401,12 +419,21 @@ SMODS.Joker{
 }
 
 -- bob
-SMODS.Atlas{
-	key = 'zbsbob',
-	path = 'zbs_bob.png',
-	px = 568,
-	py = 760,
-}
+if ZBSMod_config and ZBSMod_config.robloxbob and ZBSMod_config.robloxbob == true then 
+	SMODS.Atlas{
+		key = 'zbsbob',
+		path = 'zbs_robloxbob.png',
+		px = 71,
+		py = 95,
+	}
+else
+	SMODS.Atlas{
+		key = 'zbsbob',
+		path = 'zbs_bob.png',
+		px = 568,
+		py = 760,
+	}
+end
 
 SMODS.Sound({key = "meow", path = "meow.ogg",})
 SMODS.Sound({key = "chomp", path = "chomp-1.ogg",})
@@ -515,6 +542,10 @@ SMODS.Joker{
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue+1] = G.P_CENTERS.j_zbs_zbsbob
 		return { vars = { center.ability.extra.mult, G.GAME.probabilities.normal, center.ability.chance, center.ability.bobfound }  }
+	end,
+	
+	set_badges = function(self, card, badges)
+		addTequilaBadge(badges)
 	end,
 
 	calculate = function(self, card, context)
@@ -632,7 +663,7 @@ SMODS.Joker{
 	end,
 	
 	calculate = function(self, card, context)
-		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+		--[[if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
 			if context.other_card == G.jokers.cards[getJokerID(card) - 1] then
 				return {
 					repetitions = 1,
@@ -641,6 +672,12 @@ SMODS.Joker{
 			else
 				return nil, true 
 			end
+		end]]--
+		local other_joker = G.jokers.cards[getJokerID(card) - 1]
+		local other_joker_ret = SMODS.blueprint_effect(other_joker, card, context)
+		
+		if other_joker_ret then
+			return other_joker_ret
 		end
 	end,
 	
@@ -852,6 +889,10 @@ SMODS.Joker{
 		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
 		return { vars = { center.ability.extra.mult, center.ability.extra.multtotal, center.ability.extra.legendarymoneygain }  }
 	end,
+	
+	set_badges = function(self, card, badges)
+		addTequilaBadge(badges)
+	end,
 
 	calculate = function(self, card, context)
 		if context.setting_blind then
@@ -916,10 +957,10 @@ SMODS.Joker{
 	loc_txt= {
 		name = 'zbsexponential',
 		text = { "{X:dark_edition,C:white}^#1#{} base Mult",
-				"{C:inactive,S:0.5}It's only base Mult",
-				"{C:inactive,S:0.5}due to limitations",
-				"{C:inactive,S:0.5}You can't retrigger",
-				"{C:inactive,S:0.5}this either",}
+				"{C:inactive,s:0.5}It's only base Mult",
+				"{C:inactive,s:0.5}due to limitations",
+				"{C:inactive,s:0.5}You can't retrigger",
+				"{C:inactive,s:0.5}this either",}
 	},
 	atlas = 'zbsexponential',
 	rarity = 4,
@@ -946,7 +987,7 @@ SMODS.Joker{
 		if context.individual and context.cardarea == G.play and card.ability.extra.triggered == false then
 			card.ability.extra.triggered = true
 			print(G.GAME.blind:get_type())
-			if G.GAME.current_round.current_hand.mult == "?" then
+			if G.GAME.current_round.current_hand.mult == "?" or type(G.GAME.current_round.current_hand.mult) ~= "number" then
 				return {
 					color = G.C.RED,
 					message = "I can't do this wit a question mark, forgive me",
@@ -1533,6 +1574,10 @@ SMODS.Joker{
 		info_queue[#info_queue+1] = G.P_CENTERS.j_zbs_zbsaspid
 		return { vars = {  }  }
 	end,
+	
+	set_badges = function(self, card, badges)
+		addTequilaBadge(badges)
+	end,
 
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual and context.other_card then
@@ -1897,7 +1942,7 @@ SMODS.Joker{
 	loc_txt= {
 		name = 'Diet Pepsi',
 		text = {
-			"#1# in #2# chance to",
+			"{C:green}#1# in #2# {}chance to",
 			"create a {C:attention}Double Tag{}",
 			"whenever a card is sold",
 		}
@@ -2082,8 +2127,12 @@ SMODS.Joker{
 	config = { extra = {xmult = 1, xmulttotal = 1}},
 	
 	loc_vars = function(self, info_queue, center)
-        info_queue[#info_queue+1] = {key = 'zbsmod_artcredit', set = 'Other', vars = { "FatOldFart and ZBS" }}
+		info_queue[#info_queue+1] = {key = 'zbsmod_artcredit', set = 'Other', vars = { "FatOldFart and ZBS" }}
 		return { vars = { center.ability.extra.xmult, center.ability.extra.xmulttotal }  }
+	end,
+	
+	set_badges = function(self, card, badges)
+		addTequilaBadge(badges)
 	end,
 	
 	calculate = function(self, card, context)
@@ -2149,6 +2198,10 @@ SMODS.Joker{
 		return { vars = { center.ability.extra.xchips, center.ability.extra.xchipstotal }  }
 	end,
 	
+	set_badges = function(self, card, badges)
+		addTequilaBadge(badges)
+	end,
+	
 	calculate = function(self, card, context)
 		dillywillycount = 0
 		for i = 1, #G.jokers.cards do
@@ -2203,7 +2256,7 @@ SMODS.Joker{
 	perishable_compat = true,
 	
 	pos = {x=0, y= 0},
-	config = { extra = {xmult = 0.1, xmulttotal = 1}},
+	config = { extra = {xmult = 0.25, xmulttotal = 1}},
 	
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.xmult, center.ability.extra.xmulttotal }  }
@@ -2229,7 +2282,7 @@ SMODS.Joker{
 			end
 		end
 		if context.buying_card then
-			if ZBSMod_config and ZBSMod_config.printdebugstuffthatmightclogtheoutput and ZBSMod_config.printdebugstuffthatmightclogtheoutput == true then
+			if checkdebugprintsetting then
 			print("new card bought")
 			print(context.card)
 			print("printing the things in it")
@@ -2264,6 +2317,196 @@ SMODS.Joker{
 					message = localize('k_upgrade_ex'),
 				}
 			end
+		end
+	end,
+	
+	check_for_unlock = function(self, args)
+		if args.type == 'test' then --not a real type, just a joke
+			unlock_card(self)
+		end
+		--unlock_card(self) --unlocks the card if it isnt unlocked
+	end,
+}
+
+-- playing some boys
+SMODS.Atlas{
+	key = 'zbsplayb0i',
+	path = 'zbs_playb0i.png',
+	px = 71,
+	py = 95,
+}
+
+SMODS.Joker{
+	key = 'zbsplayb0i',
+	loc_txt= {
+		name = 'Playb0i_fartii',
+		text = { "Balatro if it was good",}
+	},
+	atlas = 'zbsplayb0i',
+	rarity = 1,
+	cost = 2,
+	pools = {["Playb0i"] = true, ["ZBSaddition"] = true},
+	
+	unlocked = true,
+	discovered = false,
+	blueprint_compat = false,
+	eternal_compat = true,
+	perishable_compat = true,
+	
+	pos = {x=0, y= 0},
+	config = {},
+	
+	loc_vars = function(self, info_queue, center)
+		return { vars = {}  }
+	end,
+	
+	add_to_deck = function(self, card, from_debuff)
+		print("hiii")
+		print(self,card,from_debuff)
+		if from_debuff ~= true then
+			G.FUNCS.overlay_menu{
+					definition = create_UIBox_custom_video1zbs("yuh","I understand."),
+					config = {no_esc = true}
+				}
+		end
+	end,
+	
+	calculate = function(self, card, context)
+		if context.joker_main then
+		end
+	end,
+	
+	check_for_unlock = function(self, args)
+		if args.type == 'test' then --not a real type, just a joke
+			unlock_card(self)
+		end
+		--unlock_card(self) --unlocks the card if it isnt unlocked
+	end,
+}
+
+-- Tariq, The Loneliest Poet
+SMODS.Atlas{
+	key = 'zbstariq',
+	path = 'zbs_tariq.png',
+	px = 128,
+	py = 128,
+}
+
+SMODS.Joker{
+	key = 'zbstariq',
+	loc_txt= {
+		name = 'Tariq, The Loneliest Poet',
+		text = { { "Instagram just be suggesting anyone",
+					"now who tf is this 😂" },
+					{"{X:mult,C:white}X#1#{} Mult",
+					"for each {C:attention}Joker{} in",
+					"Joker tray",
+					"{C:inactive}Currently {X:mult,C:white}X#2#{C:inactive} Mult",}}
+	},
+	atlas = 'zbstariq',
+	rarity = 2,
+	display_size = { w = 71, h = 71 },
+	cost = 4,
+	pools = {["ZBSaddition"] = true},
+	
+	unlocked = true,
+	discovered = false,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = true,
+	
+	pos = {x=0, y= 0},
+	config = { extra = {xmult = 0.5, xmulttotal = 0}},
+	
+	loc_vars = function(self, info_queue, center)
+		return { vars = { center.ability.extra.xmult, center.ability.extra.xmulttotal }  }
+	end,
+	
+	calculate = function(self, card, context)
+		--[[quinncount = 0
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].config.center.pools and G.jokers.cards[i].config.center.pools.QuinnOfGilead and G.jokers.cards[i].ability.timetillundeafen <= 0 then
+				quinncount = quinncount + 1
+			end
+		end]]
+		card.ability.extra.xmulttotal = #G.jokers.cards * card.ability.extra.xmult
+		if context.joker_main then
+			if card.ability.extra.xmulttotal > 0.5 then
+				return {
+					--message = "+".. card.ability.extra.multtotal.. " Mult",
+					x_mult = card.ability.extra.xmulttotal,
+				}
+			else
+				return {
+					x_mult = card.ability.extra.xmulttotal,
+					message = "So lonely...",
+				}
+			end
+		end
+	end,
+	
+	check_for_unlock = function(self, args)
+		if args.type == 'test' then --not a real type, just a joke
+			unlock_card(self)
+		end
+		--unlock_card(self) --unlocks the card if it isnt unlocked
+	end,
+}
+
+-- Sam from poopy peter
+SMODS.Atlas{
+	key = 'zbspoopysam',
+	path = 'zbs_poopy_sam.png',
+	px = 71,
+	py = 96,
+}
+
+SMODS.Sound({key = "bonk", path = "bongohit.ogg",})
+
+SMODS.Joker{
+	key = 'zbspoopysam',
+	loc_txt= {
+		name = 'Sam',
+		text = { "Uses his {C:attention}Sledgehammer{}",
+					"on all blinds, reducing",
+					"their required score",
+					"by {C:attention}#1#{}%",}
+	},
+	atlas = 'zbspoopysam',
+	rarity = 2,
+	cost = 5,
+	pools = {["ZBSaddition"] = true},
+	
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = true,
+	
+	pos = {x=0, y= 0},
+	config = { percentage = 25},
+	
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue+1] = {key = 'zbsmod_origincredit', set = 'Other', vars = { "The Revenge of Professor Poopy-Peter" }}
+		return { vars = { center.ability.percentage }  }
+	end,
+	
+	calculate = function(self, card, context)
+		if context.setting_blind then
+			--[[G.GAME.blind.chips = G.GAME.blind.chips * ((100 - card.ability.percentage) / 100)
+			play_sound("zbs_bonk")
+			card:juice_up(0.5, 0.5)]]
+			
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 1,
+				func = function()
+					G.GAME.blind.chips = G.GAME.blind.chips * ((100 - card.ability.percentage) / 100)
+					play_sound("zbs_bonk")
+					card:juice_up(0.5, 0.5)
+					return true
+				end
+			}))
 		end
 	end,
 	
