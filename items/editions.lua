@@ -1,6 +1,6 @@
 SMODS.Sound({key = "compressioneffect", path = "compressioneffect.ogg",})
 
-SMODS.Shader({ key = 'jpeg', path = 'jpeg.fs' })
+SMODS.Shader({ key = 'compressed', path = 'compressed.fs' })
 
 SMODS.Edition{ -- todo: remove all mentions of recalc_joker_slots()
 	key = "zbscompressed",
@@ -34,7 +34,7 @@ SMODS.Edition{ -- todo: remove all mentions of recalc_joker_slots()
 		}
 	end,
 	
-	shader = "jpeg",
+	shader = "compressed",
 	
 	on_apply = function(self, card)
 		--if card.area == G.jokers then
