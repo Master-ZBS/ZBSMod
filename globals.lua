@@ -1,6 +1,6 @@
 --- GLOBALS
 
-G.C.SJ = {
+G.C.ZBS = {
 	RED = HEX("FF0000"),
 	BLACK = HEX("000000"),
 	BLUE = HEX("0000FF"),
@@ -9,6 +9,10 @@ G.C.SJ = {
 	TRANSPARENT = HEX("00000000"),
 	SUPPLYPRIMARY = HEX("8B6B3E"),
 	SUPPLYSECONDARY = HEX("D6C49A"),
+	--TequilaPRIMARY = HEX("8F6648"),
+	TequilaPRIMARY = HEX("B89172"),
+	--TequilaSECONDARY = HEX("C7D0EF"),
+	TequilaSECONDARY = HEX("FDF7EB"),
 }
 
 -- Hooks
@@ -18,14 +22,16 @@ function loc_colour(_c, _default)
 	if not G.ARGS.LOC_COLOURS then
 		loc_colour_ref()
 	end
-	G.ARGS.LOC_COLOURS.sj_red = G.C.SJRED
-	G.ARGS.LOC_COLOURS.sj_black = G.C.SJBLACK
-	G.ARGS.LOC_COLOURS.sj_blue = G.C.SJBLUE
-	G.ARGS.LOC_COLOURS.sj_green = G.C.SJGREEN
-	G.ARGS.LOC_COLOURS.sj_white = G.C.SJWHITE
-	G.ARGS.LOC_COLOURS.sj_transparent = G.C.SJTRANSPARENT
-	G.ARGS.LOC_COLOURS.sj_supplyprimary = G.C.SJSUPPLYPRIMARY
-	G.ARGS.LOC_COLOURS.sj_supplysecondary = G.C.SJSUPPLYSECONDARY
+	G.ARGS.LOC_COLOURS.zbs_red = G.C.RED
+	G.ARGS.LOC_COLOURS.zbs_black = G.C.BLACK
+	G.ARGS.LOC_COLOURS.zbs_blue = G.C.BLUE
+	G.ARGS.LOC_COLOURS.zbs_green = G.C.GREEN
+	G.ARGS.LOC_COLOURS.zbs_white = G.C.WHITE
+	G.ARGS.LOC_COLOURS.zbs_transparent = G.C.TRANSPARENT
+	G.ARGS.LOC_COLOURS.zbs_supplyprimary = G.C.SUPPLYPRIMARY
+	G.ARGS.LOC_COLOURS.zbs_supplysecondary = G.C.SUPPLYSECONDARY
+	G.ARGS.LOC_COLOURS.zbs_tequilaprimary = G.C.TequilaPRIMARY
+	G.ARGS.LOC_COLOURS.zbs_tequilasecondary = G.C.TequilaSECONDARY
 	return loc_colour_ref(_c, _default)
 end
 
@@ -53,12 +59,49 @@ function getJokerID(card)
 	end
 end
 
-function jokerExists(abilityname)
+function jokerExists(key)
 	local _check = false
 	if G.jokers and G.jokers.cards then
 		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i].ability.name == abilityname then _check = true end
-			--if G.jokers.cards[i].ability.name == 'j_yahimod_subwaysurfers' then _check = true end
+			if G.jokers.cards[i].ability.name == key then _check = true end
+		end
+	end
+	return _check
+end
+
+function jokerWithPoolExists(pool)
+	local _check = false
+	if G.jokers and G.jokers.cards then
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].config.center.pools and G.jokers.cards[i].config.center.pools[pool] then
+				_check = true
+			end
+		end
+	end
+	return _check
+end
+
+function jokerFromModExists(modcheck)
+	local _check = false
+	if G.jokers and G.jokers.cards then
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].config.center.mod and G.jokers.cards[i].config.center.mod.id and G.jokers.cards[i].config.center.mod.id == modcheck then
+				_check = true
+			end
+		end
+	end
+	return _check
+end
+
+function jokerFromModExistsAndIsRareOrAbove(modcheck)
+	local _check = false
+	if G.jokers and G.jokers.cards then
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].config.center.mod and G.jokers.cards[i].config.center.mod.id and G.jokers.cards[i].config.center.mod.id == modcheck then
+				if G.jokers.cards[i].config.center.rarity and G.jokers.cards[i].config.center.rarity >= 3 then
+					_check = true
+				end
+			end
 		end
 	end
 	return _check
@@ -79,8 +122,8 @@ end
 
 local beforebonus = 0
 
-function recalc_joker_slots()
-	if G.jokers and G.jokers.cards then
+function recalc_joker_slots() -- useless as thing in edition config discovered
+	if G.jokers and G.jokers.cards and false then
 		G.GAME.zbs = G.GAME.zbs or {}
 		G.GAME.zbs.storedbonus = G.GAME.zbs.storedbonus or 0
 		local base = G.jokers.config.card_limit
@@ -233,7 +276,96 @@ function displayimage(atlas_key, dx, dy, duration)
 	}))
 end
 
+function addTequilaBadge(badges)
+	badges[#badges+1] = create_badge("Tequila", G.C.ZBS.TequilaPRIMARY, G.C.ZBS.TequilaSECONDARY, 1.2 )
+end
+
+function getRanksInDeck()
+	local ranks = {}
+	local seen = {}
+					
+	for k, card in ipairs(G.deck.cards) do
+		local rank = card:get_id()
+		print(rank)
+		if not seen[rank] then
+			seen[rank] = true
+			ranks[#ranks+1] = rank
+		end
+	end
+	print(ranks)
+	return ranks
+end
+
+rankNumToName = {
+	"1",
+	"2",
+	"3",
+	"4",
+	"5",
+	"6",
+	"7",
+	"8",
+	"9",
+	"10",
+	"Jack",
+	"Queen",
+	"King",
+	"Ace",
+	"skibidi, skibidi, hawk tuah hawk",
+}
+
+function checkdebugprintsetting()
+	return ZBSMod_config and ZBSMod_config.printdebugstuffthatmightclogtheoutput and ZBSMod_config.printdebugstuffthatmightclogtheoutput == true
+end
+
+--[[
+function create_center_button()
+	G.FUNCS.my_center_button = function()
+		play_sound("zbs_bwomp")
+		print("PRESSED")
+	end
+	
+	local box = UIBox{
+		definition = {
+			n = G.UIT.ROOT,
+			config = {
+				align = "cm" -- center middle
+			},
+			nodes = {
+				{
+					n = G.UIT.BUTTON,
+					config = {
+						id = "my_center_button",
+						func = "my_center_button",
+						label = { "PRESS ME" },
+						minw = 4,
+						minh = 1.2
+					}
+				}
+			}
+		}
+	}
+	
+	-- THIS is what makes it appear
+	box.T.x = 0
+	box.T.y = 0
+	box.debug = true
+	
+	table.insert(G.ROOM_ATTACH, box)
+end
+]]--
 SMODS.Sound({key = "bwomp", path = "bwomp.ogg",})
+
+SMODS.Sound({
+	key = "zbsmusic_zbstime",
+	path = "music_balatgro_remix.ogg",
+	pitch = 1,
+	volume = 2.5,
+	select_music_track = function()
+		if jokerFromModExistsAndIsRareOrAbove("ZBSmod") --[[and not jokerWithPoolExists("Exotic")]] --[[and not player_in_shop]] then
+			return true end
+	end,
+})
 
 SMODS.Sound({
 	key = "music_exotic", 
@@ -241,8 +373,19 @@ SMODS.Sound({
 	pitch = 0.7,
 	volume = 0.6,
 	select_music_track = function()
-		if jokerExists("j_zbs_zbsexponential") --[[and not player_in_shop]] then
-			return true end
+		if jokerWithPoolExists("Exotic") --[[and not player_in_shop]] then
+			return true and 98 end
+	end,
+})
+
+SMODS.Sound({
+	key = "music_balatroifitwasgood", 
+	path = "music_balatroifitwasgood.ogg",
+	pitch = 1,
+	volume = 2.5,
+	select_music_track = function()
+		if jokerExists("j_zbs_zbsplayb0i") --[[and not player_in_shop]] then
+			return true and 99 end
 	end,
 })
 
@@ -277,9 +420,9 @@ SMODS.Sound({
 
 SMODS.Sound({
 	key = "zbsmusic_mainline",
-	path = "music_meowforward.ogg",
+	path = "music_balatgro_remix.ogg",
 	pitch = 1,
-	volume = 3,
+	volume = 4,
 	select_music_track = function()
 		return G.STAGE == G.STAGES.MAIN_MENU
 	end,

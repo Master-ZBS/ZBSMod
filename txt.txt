@@ -14,4 +14,5 @@ midasses conscript: all gold seal gold diamond suit cards held in hand give $10,
 todo:
 look into animated sprites
 
-3 27
+F2PUK9A4
+BEJY5PRU

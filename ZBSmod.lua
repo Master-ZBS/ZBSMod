@@ -312,7 +312,7 @@ SMODS.current_mod.extra_tabs = function() --Credits tab
 	}
 end
 
-SMODS.current_mod.config_tab = function()
+--[[SMODS.current_mod.config_tab = function()
 	return {n = G.UIT.ROOT, config = {r = 0.1, align = "cm", padding = 0.1, colour = G.C.BLACK, minw = 8, minh = 6}, nodes = {
 		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
 			{n = G.UIT.C, config = { align = "c", padding = 0 }, nodes = {
@@ -322,8 +322,16 @@ SMODS.current_mod.config_tab = function()
 				create_toggle{ col = true, label = "", scale = 0.85, w = 0, shadow = true, ref_table = ZBSMod_config, ref_value = 'printdebugstuffthatmightclogtheoutput' },
 			}},
 		}},
+		{n = G.UIT.R, config = {align = "cl", padding = 0}, nodes = {
+			{n = G.UIT.C, config = { align = "c", padding = 0 }, nodes = {
+				{ n = G.UIT.T, config = { text = "Use Poopy-Peters design for Bob", scale = 0.35, colour = G.C.UI.TEXT_LIGHT }},
+			}},
+			{n = G.UIT.C, config = { align = "cl", padding = 0.05 }, nodes = {
+				create_toggle{ col = true, label = "", scale = 0.85, w = 0, shadow = true, ref_table = ZBSMod_config, ref_value = 'robloxbob' },
+			}},
+		}},
 	}}
-end
+end]]
 
 local tick_timer = 0
 
@@ -358,7 +366,7 @@ function Card:init(X, Y, W, H, card_type, center, params)
 	old_card_init(self, X, Y, W, H, card_type, center, params)
 
 	-- We are in the title screen
-	print(G.STATE)
+	--print(G.STATE)
 	if G.STATE == 13 then
 		-- Intro card has no center or ability
 		print(self)
@@ -451,6 +459,7 @@ end
 
 
 assert(SMODS.load_file("globals.lua"))()
+assert(SMODS.load_file("config_tab.lua"))()
 
 -- Load item files
 local item_src = NFS.getDirectoryItems(SMODS.current_mod.path .. "items")

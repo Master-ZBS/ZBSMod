@@ -24,6 +24,25 @@ return {
                                 "{C:green}#1#{}'s cat!"
                             },
                         },
+            zbsmod_origincredit = {
+                            name = "Origin",
+                            text = {
+                                "Originated from",
+								"{C:green}#1#{}!"
+                            },
+                        },
+            zbsmod_annoyedrant = {
+                            name = "Rant",
+                            text = {
+                                "I am so annoyed right now",
+								"I was just looking through the",
+								"Steamodded documentation",
+								"and found a thing about",
+								"card_limit in the config...",
+								"So apparently all my compression",
+								"code is fucking useless"
+                            },
+                        },
 		}
 	},
 	misc = {
