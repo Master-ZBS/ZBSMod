@@ -4,7 +4,7 @@
 A mod for Balatro that add stupid shit
 
 # How to install
-uh idk just like download this repository and shove it into your mods folder i guess (can you tell i haven't used github before?)
+Download the latest release and export it, with the folder that comes out, open it to see if the mod folder is in one folder deep, if not, just move it to mods, if yes, move the mod folder inside of it to the mods folder
 
 # Additions
 Currently there are:
